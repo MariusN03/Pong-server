@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.min.js" integrity="sha512-xzC4RSo+4m1clLhr0pQr6yFjO9bJ0py6+l65SBibI8/pSEU8U4iVZ7xm95WRq8PXw2MKv8SSR3QkqR2jciG5Ug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js" integrity="sha512-rCZdHNB0AePry6kAnKAVFMRfWPmUXSo+/vlGtrOUvhsxD0Punm/xWbEh+8vppPIOzKB9xnk42yCRZ5MD/jvvjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="index.css">
+    <title>Template</title>
+</head>
+<body>
+    <div class="page " id="name">
+        <div class="title">Indtast dit navn</div>
+        <div class="input">
+            <input type="text" id="nameInput" placeholder="Aa">
+            <button id="nameButton">OK</button>
+        </div>
+    </div>    
+    <div class="page " id="reject">
+        <div class="title">Desværre smukke, der var ikke plads</div>
+        <div class="picture">😢</div>
+        <button id="rejectButton">Klik her for at prøve igen</button>
+    </div>
+    <div class="page " id="lobby">
+        <div class="title" id="lobbyText">Venter på spillere</div>
+        <div class="lds-circle"><div></div></div>
+    </div>
+    <div class="page " id="play">
+        <div class="title">Vælg din hånd <span id='myName'></span></div>
+
+        <div id="scoreBoard">
+            <div id="nameDiv">
+                <p class="names" id="name1">navn1</p>
+                <p class="names" id="name2">navn2</p>
+            </div>
+    
+            <div id="scoreDiv">
+                <p class="scores" id="score1">0</p>
+                <p class="scores" id="score2">0</p>
+            </div>
+        </div>
+
+        <div class="theGame">            
+        </div>
+    </div>
+    
+
+    <div class="page" id="result">
+        <div class="title">Vinder</div>
+        <div class="timer" id="winner">Allan</div>
+        <div class="picture">🎉</div>
+        <button id="restartButton">Spil igen</button>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
