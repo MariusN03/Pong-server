@@ -13,6 +13,7 @@ const serverSocket = io(server)
 let gotName = 0, gotChoice = 0
 
 let players = []
+let playerNames = []
 
 //al snak med klienterne sker på connection
 serverSocket.on('connection', socket => {
@@ -39,11 +40,12 @@ serverSocket.on('connection', socket => {
         thisPlayer.name = name
         //registrer at vi har modtaget et navn til - læg 1 til navnetæller
         gotName ++
+        playerNames.push(name)
         console.log('Fik navn: ' + name, ' Vi har nu ' + gotName + ' navn(e)')        
         //hvis vi har modtaget BEGGE navne, start spil 
         if(gotName == 2){
             console.log('got both names, ready to play')
-            serverSocket.emit('play', true)
+            serverSocket.emit('play', playerNames)
         } 
     })
 

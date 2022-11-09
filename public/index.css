@@ -7,6 +7,12 @@
     font-family:'Roboto';
     font-size: x-large;
     text-align:center;
+    overflow: hidden;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
 }
 
 .page{
@@ -14,7 +20,6 @@
     background:white;
     height: 100vh;
     padding:1rem;
-    overflow:hidden;
     background:white;
     position:fixed;
     left:-100vw;
@@ -28,21 +33,21 @@
     z-index:5;
 }
 
-.paddle{
+/* .paddle{
     height: 20vh;
     width: 2rem;
     background-color: blue;
     position: fixed;
     top: calc(50vh - 10vh);
-}
+} */
 
-#paddle1{
+/* #paddle1{
     left: 10vw;
 }
 
 #paddle2{
     right: 10vw;
-}
+} */
 
 #play{
     border:10px solid black;
@@ -53,6 +58,10 @@
     place-items:center;
 }
 
+#theGame {
+    position: fixed;
+    top: 30vh;
+}
 
 #name, #lobby{
     grid-template-rows: 1fr 1fr;
