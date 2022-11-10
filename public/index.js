@@ -2,6 +2,8 @@ let clientSocket
 let currentPage = '#lobby'
 let nameInput, nameButton, myName, rejectButton, theGame, lobbyText, timer, padde1, paddle2, player1, player2, winner, restartButton
 let p1, p2
+let username
+let userOrder
 
 function setup(){
   let c = createCanvas(600,400)
@@ -37,6 +39,7 @@ function setup(){
     if(nameInput.value() != ''){
       clientSocket.emit('name', nameInput.value())
       myName.html(nameInput.value())
+      username = nameInput.value()
       lobbyText.html('Venter på spillere')
       shiftPage('#lobby')
     }else{
@@ -44,14 +47,19 @@ function setup(){
     }
     
     //start spil
-    clientSocket.on('play', (playerNames) => {
+    clientSocket.on('play', (players) => {
       console.log('got play, starting game')
       console.log(name1.html())
-      console.log(playerNames)
+      console.log(players)
       console.log(p1,p2)
-      name1.html(playerNames[0])
-      name2.html(playerNames[1])
+      name1.html(players[0].name)
+      name2.html(players[1].name)
       theGame.child(c)
+      if(players[0].name == username){
+        userOrder = 0
+      }else {
+        userOrder = 1
+      }
       shiftPage('#play')
     })
 
@@ -70,6 +78,11 @@ function setup(){
       winner.html(w)
       shiftPage('#result')
       restartButton.mousePressed(()=>clientSocket.emit('restart'))
+    })
+
+    clientSocket.on('move', players => {
+      p1.move(players[0].move)
+      p2.move(players[1].move)
     })
   })
 
@@ -119,7 +132,9 @@ class PaddleC {
     this.w = w;
     this.h = h;
   }
-
+  move(num) {
+      this.pos.y += num
+  }
   show() {
     fill("white")
     rect(this.pos.x, this.pos.y, this.w, this.h)
@@ -130,10 +145,12 @@ function movePaddles() {
   if(keyIsDown(38)){
     console.log("+++")
     //send ryk paddle op til server
+    clientSocket.emit('move', -5)
   }
   if(keyIsDown(40)){
     console.log("---")
     //send ryk paddle ned til server
+    clientSocket.emit('move', 5)
   }
 }
 
@@ -142,4 +159,6 @@ function draw() {
   p1.show()
   p2.show()
   movePaddles()
+  // console.log(p1.pos.y) 
+  //0 til 300
 }

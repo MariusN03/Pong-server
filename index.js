@@ -40,36 +40,15 @@ serverSocket.on('connection', socket => {
         thisPlayer.name = name
         //registrer at vi har modtaget et navn til - læg 1 til navnetæller
         gotName ++
-        playerNames.push(name)
         console.log('Fik navn: ' + name, ' Vi har nu ' + gotName + ' navn(e)')        
         //hvis vi har modtaget BEGGE navne, start spil 
         if(gotName == 2){
             console.log('got both names, ready to play')
-            serverSocket.emit('play', playerNames)
+            serverSocket.emit('play', players)
         } 
     })
 
-    //modtag spillernes valg 
-    socket.on('choice', choice => {
-        //indsæt valget i players array
-        let thisPlayer = players.find( p => p.id == socket.id )
-        thisPlayer.choice = choice
-        //registrer at vi har modtaget et valg til - læg en til valgtæller 
-        gotChoice ++
-        console.log(thisPlayer.name + ' valgte ' + thisPlayer.choice)
-        console.log('Vi har nu ' + gotChoice + ' valg')
-        //hvis vi har modtaget begge valg, beregn vinder 
-        if(gotChoice == 2){
-            let winner = players[0].name
-            if(players[0].choice == players[1].choice) winner = 'draw'
-            if(players[0].choice == 'scissor' && players[1].choice == 'stone') winner = players[1].name
-            if(players[0].choice == 'stone' && players[1].choice == 'paper') winner = players[1].name
-            if(players[0].choice == 'paper' && players[1].choice == 'scissor') winner = players[1].name
-            console.log('Sender resultat, vinder er ', winner)
-            serverSocket.emit('result', winner)
-            gotChoice = 0
-        } 
-    })
+    
 
     //håndter disconnect - hvis en spiller lukker sin side
     socket.on('disconnect', ()=>{
@@ -92,5 +71,12 @@ serverSocket.on('connection', socket => {
         gotChoice = 0
         //start spil
         serverSocket.emit('play', true)
+    })
+
+    socket.on('move', (val)=>{
+        let thisPlayer = players.find( p => p.id == socket.id )
+        players.map(p => p.move = 0)
+        thisPlayer.move = val
+        serverSocket.emit('move', players)
     })
 })
