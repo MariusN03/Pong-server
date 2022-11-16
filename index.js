@@ -45,10 +45,15 @@ serverSocket.on('connection', socket => {
         if(gotName == 2){
             console.log('got both names, ready to play')
             serverSocket.emit('play', players)
+            runGame()
         } 
     })
 
-    
+    function runGame(){
+        let tick = setInterval(()=>{
+            serverSocket.emit('tick')
+        }, 1000)
+    }
 
     //håndter disconnect - hvis en spiller lukker sin side
     socket.on('disconnect', ()=>{
