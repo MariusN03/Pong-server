@@ -4,6 +4,7 @@ let nameInput, nameButton, myName, rejectButton, theGame, lobbyText, timer, padd
 let p1, p2
 let username
 let userOrder
+let speed = 10
 
 function setup(){
   let c = createCanvas(600,400)
@@ -84,6 +85,11 @@ function setup(){
       p1.move(players[0].move)
       p2.move(players[1].move)
     })
+
+    clientSocket.on('tick', ()=>{
+      //det her er draw
+      console.log('ticking')
+    })
   })
 
 
@@ -132,7 +138,16 @@ class PaddleC {
     this.w = w;
     this.h = h;
   }
-  move(num) {
+  move(num) { 
+      if(300 <= this.pos.y || 0 >= this.pos.y){
+        if(this.pos.y >= 300){
+          this.pos.y = 300
+        }
+        if(this.pos.y <= 0){
+          this.pos.y = 0
+        }
+//          num = -num
+      }
       this.pos.y += num
   }
   show() {
@@ -145,12 +160,12 @@ function movePaddles() {
   if(keyIsDown(38)){
     console.log("+++")
     //send ryk paddle op til server
-    clientSocket.emit('move', -5)
+    clientSocket.emit('move', -speed)
   }
   if(keyIsDown(40)){
     console.log("---")
     //send ryk paddle ned til server
-    clientSocket.emit('move', 5)
+    clientSocket.emit('move', speed)
   }
 }
 
