@@ -4,13 +4,14 @@ let nameInput, nameButton, myName, rejectButton, theGame, lobbyText, timer, padd
 let p1, p2
 let username
 let userOrder
-let speed = 10
+let speed = 5
 
 function setup(){
   let c = createCanvas(600,400)
   
   p1 = new PaddleC(50, 150, 20, 100)
   p2 = new PaddleC(530, 150, 20, 100)
+  let b = new Ball(8, width/2, height/2, 'white', 'bold')
 
   background("black")
   
@@ -89,6 +90,12 @@ function setup(){
     clientSocket.on('tick', ()=>{
       //det her er draw
       console.log('ticking')
+      background("black")
+      p1.show()
+      p2.show()
+      movePaddles()
+      b.show()
+      b.update()
     })
   })
 
@@ -131,7 +138,54 @@ function initVars(){
   restartButton = select('#restartButton')
 }
 
-class PaddleC {
+class Ball{
+
+  constructor(radius, xpos, ypos, col, name){
+      this.radius = radius
+      this.xpos = xpos
+      this.ypos = ypos 
+      this.col = col 
+      this.velocityX = 5  
+      this.velocityY = 5 
+      this.gravity = 1
+      this.friction = 1- radius / 1000
+      this.bounce = 2
+  }
+
+  show(){
+      
+      fill(this.col)
+      ellipse(this.xpos, this.ypos, this.radius)
+  }
+
+  update(){
+      this.xpos += this.velocityX
+      this.ypos += this.velocityY
+
+  
+      if(this.xpos >= width - this.radius/2){
+          this.xpos = width - this.radius/2
+          
+          this.velocityX = -this.velocityX
+      }
+      if(this.xpos <= 0){
+          this.xpos = 0
+          
+          this.velocityX = -this.velocityX
+      }
+      if(this.ypos >= height - this.radius/2){
+          this.ypos = height - this.radius/2
+          
+          this.velocityY = -this.velocityY
+      }
+      if(this.ypos <= 0){
+          this.ypos = 0
+          
+          this.velocityY = -this.velocityY
+      }
+  }
+}  
+  class PaddleC {
   
   constructor(x, y, w, h){
     this.pos = createVector(x, y)
@@ -169,11 +223,3 @@ function movePaddles() {
   }
 }
 
-function draw() {
-  background("black")
-  p1.show()
-  p2.show()
-  movePaddles()
-  // console.log(p1.pos.y) 
-  //0 til 300
-}

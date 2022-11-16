@@ -52,7 +52,7 @@ serverSocket.on('connection', socket => {
     function runGame(){
         let tick = setInterval(()=>{
             serverSocket.emit('tick')
-        }, 1000)
+        }, 10)
     }
 
     //håndter disconnect - hvis en spiller lukker sin side
